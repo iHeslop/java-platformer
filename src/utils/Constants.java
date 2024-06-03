@@ -16,10 +16,9 @@ public class Constants {
                     return 4;
                 case RUNNING:
                     return 6;
-                case JUMP:
-                    return 10;
                 case SLIDE:
                     return 5;
+                case JUMP:
                 case HOLD:
                     return 9;
                 default:
