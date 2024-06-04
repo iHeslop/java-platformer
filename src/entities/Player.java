@@ -2,15 +2,13 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import utils.LoadSave;
+
 import static utils.Constants.PlayerConstants.IDLE;
 import static utils.Constants.PlayerConstants.JUMP;
 import static utils.Constants.PlayerConstants.RUNNING;
 import static utils.Constants.PlayerConstants.getSpriteAmount;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
@@ -21,9 +19,12 @@ public class Player extends Entity {
     private boolean left, up, down, right, jumping;
     private boolean moving = false;
     private float playerSpeed = 2.0f;
+    private int width, height;
 
-    public Player(float x, float y) {
+    public Player(float x, float y, int width, int height) {
         super(x, y);
+        this.width = width;
+        this.height = height;
         loadAnimations();
     }
 
@@ -34,27 +35,15 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 100, 72, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
     }
 
     public void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/player_sprites.png");
-        try {
-            img = ImageIO.read(is);
-            animations = new BufferedImage[6][9];
-            for (int j = 0; j < animations.length; j++) {
-                for (int i = 0; i < animations[j].length; i++) {
-                    animations[j][i] = img.getSubimage(i * 50, j * 37, 50, 37);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error: Unable to load image from input stream.");
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+        animations = new BufferedImage[6][9];
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[j].length; i++) {
+                animations[j][i] = img.getSubimage(i * 50, j * 37, 50, 37);
             }
         }
     }
