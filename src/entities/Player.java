@@ -3,27 +3,34 @@ package entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import main.Game;
 import utils.LoadSave;
 
 import static utils.Constants.PlayerConstants.IDLE;
 import static utils.Constants.PlayerConstants.JUMP;
 import static utils.Constants.PlayerConstants.RUNNING;
 import static utils.Constants.PlayerConstants.getSpriteAmount;
+import static utils.HelpMethods.canMoveHere;
 
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
-    private int aniTick, aniSpeed = 30, aniIndex;
+    private int aniTick, aniSpeed = 30, jumpAniSpeed = 15, aniIndex;
     private int playerAction = IDLE;
     private boolean left, up, down, right, jumping;
     private boolean moving = false;
     private float playerSpeed = 2.0f;
     private int width, height;
+    private int[][] data;
+
+    private float xDrawOffset = 18 * Game.SCALE;
+    private float yDrawOffset = 6 * Game.SCALE;
 
     public Player(float x, float y, int width, int height) {
-        super(x, y);
+        super(x, y, width, height);
         this.width = width;
         this.height = height;
+        initHitBox(x, y, 14 * Game.SCALE, 28 * Game.SCALE);
         loadAnimations();
     }
 
@@ -34,7 +41,9 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y
+                - yDrawOffset), width, height, null);
+        drawHitBox(g);
     }
 
     public void loadAnimations() {
@@ -49,7 +58,8 @@ public class Player extends Entity {
 
     public void updateAnimationTick() {
         aniTick++;
-        if (aniTick >= aniSpeed) {
+        int currentAniSpeed = playerAction == JUMP ? jumpAniSpeed : aniSpeed;
+        if (aniTick >= currentAniSpeed) {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= getSpriteAmount(playerAction)) {
@@ -83,19 +93,28 @@ public class Player extends Entity {
 
     public void updatePos() {
         moving = false;
+        if (!left && !right && !up && !down) {
+            return;
+        }
+        float xSpeed = 0;
+        float ySpeed = 0;
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            xSpeed = -playerSpeed;
+
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            xSpeed = playerSpeed;
         }
 
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
+            ySpeed = -playerSpeed;
+
         } else if (down && !up) {
-            y += playerSpeed;
+            ySpeed = playerSpeed;
+        }
+
+        if (canMoveHere(hitBox.x + xSpeed, hitBox.y + ySpeed, hitBox.width, hitBox.height, data)) {
+            hitBox.x += xSpeed;
+            hitBox.y += ySpeed;
             moving = true;
         }
     }
@@ -125,5 +144,9 @@ public class Player extends Entity {
         down = false;
         right = false;
         left = false;
+    }
+
+    public void loadLevelData(int[][] data) {
+        this.data = data;
     }
 }
