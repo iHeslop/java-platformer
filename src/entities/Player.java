@@ -12,7 +12,6 @@ import static utils.Constants.PlayerConstants.getSpriteAmount;
 
 public class Player extends Entity {
 
-    private BufferedImage img;
     private BufferedImage[][] animations;
     private int aniTick, aniSpeed = 30, aniIndex;
     private int playerAction = IDLE;
