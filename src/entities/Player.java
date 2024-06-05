@@ -17,9 +17,9 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniSpeed = 30, jumpAniSpeed = 15, aniIndex;
     private int playerAction = IDLE;
-    private boolean left, up, down, right, jump;
+    private boolean left, right, jump;
     private boolean moving = false;
-    private float playerSpeed = 2.0f;
+    private float playerSpeed = 1.0f * Game.SCALE;
     private int width, height;
     private int[][] data;
 
@@ -36,7 +36,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         this.width = width;
         this.height = height;
-        initHitBox(x, y, 14 * Game.SCALE, 28 * Game.SCALE);
+        initHitBox(x, y, (int) (14 * Game.SCALE), (int) (28 * Game.SCALE));
         loadAnimations();
     }
 
@@ -49,7 +49,6 @@ public class Player extends Entity {
     public void render(Graphics g) {
         g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y
                 - yDrawOffset), width, height, null);
-        drawHitBox(g);
     }
 
     public void loadAnimations() {
@@ -165,21 +164,11 @@ public class Player extends Entity {
         this.left = left;
     }
 
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
-    }
-
     public void setJumping(boolean jump) {
         this.jump = jump;
     }
 
     public void resetBooleans() {
-        up = false;
-        down = false;
         right = false;
         left = false;
     }
