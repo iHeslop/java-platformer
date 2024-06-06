@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import utils.LoadSave;
 
+import static utils.Constants.PlayerConstants.CROUCH;
 import static utils.Constants.PlayerConstants.IDLE;
 import static utils.Constants.PlayerConstants.JUMP;
 import static utils.Constants.PlayerConstants.RUNNING;
@@ -19,6 +20,7 @@ public class Player extends Entity {
     private int playerAction = IDLE;
     private boolean left, right, jump;
     private boolean moving = false;
+    private boolean crouching = false;
     private float playerSpeed = 1.0f * Game.SCALE;
     private int width, height;
     private int[][] data;
@@ -54,12 +56,11 @@ public class Player extends Entity {
                 (int) (hitBox.y
                         - yDrawOffset),
                 width * flipW, height, null);
-        drawHitBox(g, levelOffset);
     }
 
     public void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
-        animations = new BufferedImage[6][9];
+        animations = new BufferedImage[5][9];
         for (int j = 0; j < animations.length; j++) {
             for (int i = 0; i < animations[j].length; i++) {
                 animations[j][i] = img.getSubimage(i * 50, j * 37, 50, 37);
@@ -85,6 +86,8 @@ public class Player extends Entity {
 
         if (moving) {
             playerAction = RUNNING;
+        } else if (crouching) {
+            playerAction = CROUCH;
         } else {
             playerAction = IDLE;
         }
@@ -179,6 +182,10 @@ public class Player extends Entity {
 
     public void setJumping(boolean jump) {
         this.jump = jump;
+    }
+
+    public void setCrouching(boolean crouch) {
+        this.crouching = crouch;
     }
 
     public void resetBooleans() {

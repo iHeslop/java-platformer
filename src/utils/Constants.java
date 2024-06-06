@@ -49,9 +49,8 @@ public class Constants {
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
         public static final int JUMP = 2;
-        public static final int SLIDE = 3;
-        public static final int HOLD = 4;
-        public static final int CROUCH = 5;
+        public static final int HOLD = 3;
+        public static final int CROUCH = 4;
 
         public static int getSpriteAmount(int playerAction) {
             switch (playerAction) {
@@ -60,10 +59,9 @@ public class Constants {
                     return 4;
                 case RUNNING:
                     return 6;
-                case SLIDE:
-                    return 5;
-                case JUMP:
                 case HOLD:
+                    return 1;
+                case JUMP:
                     return 9;
                 default:
                     return 1;
