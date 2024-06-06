@@ -1,6 +1,5 @@
 package gamestates;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -48,11 +47,6 @@ public class Menu extends State implements StateMethods {
         for (MenuButton mb : buttons) {
             mb.draw(g);
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
@@ -107,6 +101,10 @@ public class Menu extends State implements StateMethods {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 
 }
