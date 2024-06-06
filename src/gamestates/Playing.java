@@ -48,6 +48,11 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    public void resetAll() {
+        paused = false;
+        player.resetAll();
+    }
+
     private void initClasses() {
         levelManager = new LevelManager(game);
         player = new Player(200, 200, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));

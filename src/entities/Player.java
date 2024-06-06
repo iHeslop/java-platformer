@@ -32,6 +32,9 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
+    private int flipX = 0;
+    private int flipW = 1;
+
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.width = width;
@@ -47,8 +50,11 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g, int levelOffset) {
-        g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset) - levelOffset, (int) (hitBox.y
-                - yDrawOffset), width, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset) - levelOffset + flipX,
+                (int) (hitBox.y
+                        - yDrawOffset),
+                width * flipW, height, null);
+        drawHitBox(g, levelOffset);
     }
 
     public void loadAnimations() {
@@ -102,9 +108,6 @@ public class Player extends Entity {
         if (jump) {
             jump();
         }
-        // if (!left && !right && !inAir) {
-        // return;
-        // }
 
         if (!inAir) {
             if ((!left && !right) || (right && left)) {
@@ -114,9 +117,13 @@ public class Player extends Entity {
         float xSpeed = 0;
         if (left) {
             xSpeed -= playerSpeed;
+            flipX = width;
+            flipW = -1;
         }
         if (right) {
             xSpeed += playerSpeed;
+            flipX = 0;
+            flipW = 1;
         }
 
         if (!inAir) {
@@ -189,5 +196,17 @@ public class Player extends Entity {
     private void resetInAIr() {
         inAir = false;
         airSpeed = 0;
+    }
+
+    public void resetAll() {
+        resetBooleans();
+        inAir = false;
+        moving = false;
+        playerAction = IDLE;
+        hitBox.x = x;
+        hitBox.y = y;
+        if (!isEntityOnFloor(hitBox, data)) {
+            inAir = true;
+        }
     }
 }

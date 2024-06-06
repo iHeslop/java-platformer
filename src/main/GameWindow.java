@@ -14,9 +14,10 @@ public class GameWindow {
 
         frame.setDefaultCloseOperation(3);
         frame.add(panel);
-        frame.setLocationRelativeTo(null);
+
         frame.setResizable(false);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.addWindowFocusListener(new WindowFocusListener() {
 
