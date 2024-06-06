@@ -1,5 +1,8 @@
 package gamestates;
 
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
+
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -11,7 +14,7 @@ import utils.LoadSave;
 
 public class Menu extends State implements StateMethods {
     private MenuButton[] buttons = new MenuButton[3];
-    private BufferedImage backgroundImg;
+    private BufferedImage backgroundImg, backgroundImgMenu;
     private int menuX, menuY, menuWidth, menuHeight;
 
     public Menu(Game game) {
@@ -22,6 +25,7 @@ public class Menu extends State implements StateMethods {
 
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
+        backgroundImgMenu = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMAGE);
         menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE);
         menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE);
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
@@ -43,6 +47,7 @@ public class Menu extends State implements StateMethods {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(backgroundImgMenu, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
         g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight, null);
         for (MenuButton mb : buttons) {
             mb.draw(g);
