@@ -158,7 +158,6 @@ public class Player extends Entity {
             inAir = true;
             airSpeed = jumpSpeed;
             jumpCount++;
-            System.out.println(jumpCount);
         }
     }
 
