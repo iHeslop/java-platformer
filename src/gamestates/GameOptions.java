@@ -28,7 +28,7 @@ public class GameOptions extends State implements StateMethods {
     }
 
     private void loadButtons() {
-        int menuX = (int) (387 * Game.SCALE);
+        int menuX = (int) (132 * Game.SCALE);
         int menuY = (int) (325 * Game.SCALE);
         menuB = new UrmButton(menuX, menuY, URM_SIZE, URM_SIZE, 2);
     }
