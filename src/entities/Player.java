@@ -18,7 +18,7 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniSpeed = 30, jumpAniSpeed = 15, aniIndex;
     private int playerAction = IDLE;
-    private boolean left, right, jump;
+    private boolean left, right;
     private boolean moving = false;
     private boolean crouching = false;
     private float playerSpeed = 1.0f * Game.SCALE;
@@ -33,6 +33,8 @@ public class Player extends Entity {
     private float jumpSpeed = -2.25f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
+    private int maxJumps = 2;
+    private int jumpCount = 0;
 
     private int flipX = 0;
     private int flipW = 1;
@@ -76,7 +78,6 @@ public class Player extends Entity {
             aniIndex++;
             if (aniIndex >= getSpriteAmount(playerAction)) {
                 aniIndex = 0;
-                jump = false;
             }
         }
     }
@@ -108,11 +109,8 @@ public class Player extends Entity {
     public void updatePos() {
         moving = false;
 
-        if (jump) {
-            jump();
-        }
-
         if (!inAir) {
+            jumpCount = 0;
             if ((!left && !right) || (right && left)) {
                 return;
             }
@@ -143,7 +141,7 @@ public class Player extends Entity {
             } else {
                 hitBox.y = getEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
                 if (airSpeed > 0) {
-                    resetInAIr();
+                    resetInAir();
                 } else {
                     airSpeed = fallSpeedAfterCollision;
                 }
@@ -155,12 +153,13 @@ public class Player extends Entity {
         moving = true;
     }
 
-    private void jump() {
-        if (inAir) {
-            return;
+    public void jump() {
+        if (!inAir || jumpCount < maxJumps) {
+            inAir = true;
+            airSpeed = jumpSpeed;
+            jumpCount++;
+            System.out.println(jumpCount);
         }
-        inAir = true;
-        airSpeed = jumpSpeed;
     }
 
     private void updateXPos(float xSpeed) {
@@ -180,10 +179,6 @@ public class Player extends Entity {
         this.left = left;
     }
 
-    public void setJumping(boolean jump) {
-        this.jump = jump;
-    }
-
     public void setCrouching(boolean crouch) {
         this.crouching = crouch;
     }
@@ -200,7 +195,8 @@ public class Player extends Entity {
         }
     }
 
-    private void resetInAIr() {
+    private void resetInAir() {
+        jumpCount = 0;
         inAir = false;
         airSpeed = 0;
     }
@@ -209,6 +205,7 @@ public class Player extends Entity {
         resetBooleans();
         inAir = false;
         moving = false;
+        jumpCount = 0;
         playerAction = IDLE;
         hitBox.x = x;
         hitBox.y = y;

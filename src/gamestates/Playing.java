@@ -167,7 +167,7 @@ public class Playing extends State implements StateMethods {
                 player.setCrouching(true);
                 break;
             case KeyEvent.VK_SPACE:
-                player.setJumping(true);
+                player.jump();
                 break;
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
@@ -186,9 +186,6 @@ public class Playing extends State implements StateMethods {
                 break;
             case KeyEvent.VK_S:
                 player.setCrouching(false);
-                break;
-            case KeyEvent.VK_SPACE:
-                player.setJumping(false);
                 break;
         }
     }
