@@ -34,9 +34,7 @@ public class Game implements Runnable {
         gameWindow = new GameWindow(gamePanel);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
-
         startGameLoop();
-
     }
 
     private void initClasses() {
@@ -153,5 +151,10 @@ public class Game implements Runnable {
 
     public GameWindow getGameWindow() {
         return gameWindow;
+    }
+
+    public void gameComplete() {
+        System.out.println("GAME COMPLETE");
+        System.exit(0);
     }
 }

@@ -56,7 +56,7 @@ public class Playing extends State implements StateMethods {
         levelManager = new LevelManager(game);
         int initialX = GAME_WIDTH / 2;
         int initialY = (levelManager.getCurrentLevel().getLevelData().length - 1) * Game.TILES_SIZE - Game.TILES_SIZE;
-        player = new Player(initialX, initialY - Game.TILES_SIZE * 3, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
+        player = new Player(initialX, initialY - Game.TILES_SIZE * 2, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverLay(this);
     }
@@ -99,9 +99,10 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+        g.drawImage(backgroundImg, 0, -120 - yLevelOffset, (int) (backgroundImg.getWidth() * Game.SCALE),
+                (int) (backgroundImg.getHeight() * Game.SCALE), null);
 
-        // drawClouds(g);
+        drawClouds(g);
         levelManager.draw(g, yLevelOffset);
         player.render(g, yLevelOffset);
         if (paused) {
@@ -111,20 +112,19 @@ public class Playing extends State implements StateMethods {
         }
     }
 
-    // private void drawClouds(Graphics g) {
-    // for (int i = 0; i < 3; i++) {
-    // g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (yLevelOffset * 0.3), (int)
-    // (204 * SCALE),
-    // BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT,
-    // null);
-    // }
-    // for (int i = 0; i < smallCloudPos.length; i++) {
-    // g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (yLevelOffset
-    // * 0.7), smallCloudPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT,
-    // null);
-    // }
-
-    // }
+    private void drawClouds(Graphics g) {
+        for (int i = 0; i < 3; i++) {
+            g.drawImage(bigCloud, (int) (25 * SCALE),
+                    BIG_CLOUD_WIDTH + (int) (Game.SCALE * 90) - (int) (yLevelOffset * 0.3),
+                    BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT,
+                    null);
+        }
+        for (int i = 0; i < smallCloudPos.length; i++) {
+            g.drawImage(smallCloud, smallCloudPos[i], SMALL_CLOUD_WIDTH * 4 * i - (int) (yLevelOffset
+                    * 0.7), SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT,
+                    null);
+        }
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {

@@ -18,6 +18,16 @@ public class HelpMethods {
         return false;
     }
 
+    public static boolean isTouchingDoor(float x, float y, int[][] data) {
+        float xIndex = x / Game.TILES_SIZE;
+        float yIndex = y / Game.TILES_SIZE;
+        int value = data[(int) yIndex][(int) xIndex];
+        if (value == 74) {
+            return true;
+        }
+        return false;
+    }
+
     private static boolean isSolid(float x, float y, int[][] data) {
         int maxHeight = data.length * Game.TILES_SIZE;
         if (x < 0 || x >= Game.GAME_WIDTH) {

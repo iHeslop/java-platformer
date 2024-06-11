@@ -22,6 +22,7 @@ public class LoadSave {
     public static final String BIG_CLOUDS = "big_clouds.png";
     public static final String SMALL_CLOUDS = "small_clouds.png";
     public static final String OPTIONS_MENU = "options_background.png";
+    public static final String DOOR = "door-opening.png";
 
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
@@ -41,7 +42,6 @@ public class LoadSave {
     }
 
     public static int[][] GetLevelData() {
-
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
         int[][] data = new int[img.getHeight()][img.getWidth()];
         for (int i = 0; i < img.getHeight(); i++) {
