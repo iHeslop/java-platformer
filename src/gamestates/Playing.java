@@ -99,8 +99,9 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(backgroundImg, 0, -120 - yLevelOffset, (int) (backgroundImg.getWidth() * Game.SCALE),
-                (int) (backgroundImg.getHeight() * Game.SCALE), null);
+        g.drawImage(backgroundImg, TILES_SIZE, 0 - yLevelOffset,
+                (int) (backgroundImg.getWidth() * Game.SCALE) - 2 * TILES_SIZE,
+                (int) (backgroundImg.getHeight() * Game.SCALE) - TILES_SIZE, null);
 
         drawClouds(g);
         levelManager.draw(g, yLevelOffset);
@@ -115,7 +116,7 @@ public class Playing extends State implements StateMethods {
     private void drawClouds(Graphics g) {
         for (int i = 0; i < 3; i++) {
             g.drawImage(bigCloud, (int) (25 * SCALE),
-                    BIG_CLOUD_WIDTH + (int) (Game.SCALE * 90) - (int) (yLevelOffset * 0.3),
+                    BIG_CLOUD_HEIGHT + (int) (500 * Game.SCALE) - (int) (yLevelOffset * 0.5),
                     BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT,
                     null);
         }
