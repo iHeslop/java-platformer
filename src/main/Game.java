@@ -154,7 +154,6 @@ public class Game implements Runnable {
     }
 
     public void gameComplete() {
-        System.out.println("GAME COMPLETE");
-        System.exit(0);
+        playing.setCompleted(true);
     }
 }

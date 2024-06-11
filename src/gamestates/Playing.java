@@ -12,6 +12,7 @@ import java.util.Random;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import ui.LevelCompletedOverlay;
 import ui.PauseOverLay;
 import utils.LoadSave;
 
@@ -22,7 +23,9 @@ public class Playing extends State implements StateMethods {
     private LevelManager levelManager;
     private Player player;
     private PauseOverLay pauseOverlay;
+    private LevelCompletedOverlay levelCompletedOverlay;
     private boolean paused = false;
+    private boolean completed = false;
 
     private int yLevelOffset;
     private int bottomBorder = (int) (0.5 * Game.GAME_HEIGHT);
@@ -49,6 +52,8 @@ public class Playing extends State implements StateMethods {
 
     public void resetAll() {
         paused = false;
+        completed = false;
+        levelManager.setAnimationCompleted(false);
         player.resetAll();
     }
 
@@ -59,6 +64,7 @@ public class Playing extends State implements StateMethods {
         player = new Player(initialX, initialY - Game.TILES_SIZE * 2, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverLay(this);
+        levelCompletedOverlay = new LevelCompletedOverlay(this);
     }
 
     public void windowLostFocus() {
@@ -71,12 +77,14 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
-        if (!paused) {
+        if (paused) {
+            pauseOverlay.update();
+        } else if (completed) {
+            levelCompletedOverlay.update();
+        } else {
             levelManager.update();
             player.update();
             checkViewport();
-        } else {
-            pauseOverlay.update();
         }
     }
 
@@ -105,11 +113,15 @@ public class Playing extends State implements StateMethods {
 
         drawClouds(g);
         levelManager.draw(g, yLevelOffset);
-        player.render(g, yLevelOffset);
+        if (!completed) {
+            player.render(g, yLevelOffset);
+        }
         if (paused) {
             g.setColor(new Color(0, 0, 0, 200));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             pauseOverlay.draw(g);
+        } else if (completed) {
+            levelCompletedOverlay.draw(g);
         }
     }
 
@@ -131,6 +143,8 @@ public class Playing extends State implements StateMethods {
     public void mousePressed(MouseEvent e) {
         if (paused) {
             pauseOverlay.mousePressed(e);
+        } else if (completed) {
+            levelCompletedOverlay.mousePressed(e);
         }
     }
 
@@ -138,6 +152,8 @@ public class Playing extends State implements StateMethods {
     public void mouseReleased(MouseEvent e) {
         if (paused) {
             pauseOverlay.mouseReleased(e);
+        } else if (completed) {
+            levelCompletedOverlay.mouseReleased(e);
         }
     }
 
@@ -145,6 +161,8 @@ public class Playing extends State implements StateMethods {
     public void mouseMoved(MouseEvent e) {
         if (paused) {
             pauseOverlay.mouseMoved(e);
+        } else if (completed) {
+            levelCompletedOverlay.mouseMoved(e);
         }
     }
 
@@ -196,5 +214,13 @@ public class Playing extends State implements StateMethods {
 
     public void unPauseGame() {
         paused = false;
+    }
+
+    public void unCompleteGame() {
+        completed = false;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

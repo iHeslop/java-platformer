@@ -109,4 +109,8 @@ public class LevelManager {
     public Game getGame() {
         return game;
     }
+
+    public void setAnimationCompleted(boolean completed) {
+        this.animationCompleted = completed;
+    }
 }
