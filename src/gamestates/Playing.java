@@ -25,7 +25,7 @@ public class Playing extends State implements StateMethods {
     private boolean paused = false;
 
     private int yLevelOffset;
-    private int bottomBorder = (int) (0.2 * Game.GAME_HEIGHT);
+    private int bottomBorder = (int) (0.5 * Game.GAME_HEIGHT);
     private int topBorder = (int) (0.8 * Game.GAME_HEIGHT);
     private int levelTilesHeight = LoadSave.GetLevelData().length;
     private int maxTilesOffset = levelTilesHeight - Game.TILES_IN_HEIGHT;
@@ -38,7 +38,6 @@ public class Playing extends State implements StateMethods {
     public Playing(Game game) {
         super(game);
         initClasses();
-
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMAGE);
         bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
         smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
@@ -55,7 +54,9 @@ public class Playing extends State implements StateMethods {
 
     private void initClasses() {
         levelManager = new LevelManager(game);
-        player = new Player(200, 200, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
+        int initialX = GAME_WIDTH / 2;
+        int initialY = (levelManager.getCurrentLevel().getLevelData().length - 1) * Game.TILES_SIZE - Game.TILES_SIZE;
+        player = new Player(initialX, initialY - Game.TILES_SIZE * 3, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverLay(this);
     }
@@ -82,10 +83,11 @@ public class Playing extends State implements StateMethods {
     private void checkViewport() {
         int playerY = (int) player.getHitBox().y;
         int diff = playerY - yLevelOffset;
-        if (diff > topBorder) {
-            yLevelOffset += diff - topBorder;
-        } else if (diff < bottomBorder) {
+
+        if (diff < bottomBorder) {
             yLevelOffset += diff - bottomBorder;
+        } else if (diff > topBorder) {
+            yLevelOffset += diff - topBorder;
         }
 
         if (yLevelOffset > maxLevelOffsetY) {

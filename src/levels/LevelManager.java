@@ -35,15 +35,26 @@ public class LevelManager {
     }
 
     public void draw(Graphics g, int levelOffset) {
-        for (int i = 0; i < Game.TILES_IN_HEIGHT; i++) {
-            for (int j = 0; j < levelOne.getLevelData()[0].length; j++) {
-                int index = levelOne.getSpriteIndex(j, i);
-                g.drawImage(levelSprite[index], j * TILES_SIZE, i * TILES_SIZE
-                        - levelOffset, TILES_SIZE, TILES_SIZE,
-                        null);
-            }
+        int levelHeight = levelOne.getLevelData().length;
+        int tileSize = TILES_SIZE;
+
+        int startTileY = levelOffset / tileSize;
+        if (startTileY < 0) {
+            startTileY = 0;
         }
 
+        int endTileY = (levelOffset + Game.GAME_HEIGHT) / tileSize + 1;
+        if (endTileY > levelHeight) {
+            endTileY = levelHeight;
+        }
+
+        for (int i = startTileY; i < endTileY; i++) {
+            for (int j = 0; j < levelOne.getLevelData()[0].length; j++) {
+                int index = levelOne.getSpriteIndex(j, i);
+                g.drawImage(levelSprite[index], j * tileSize, i * tileSize - levelOffset,
+                        tileSize, tileSize, null);
+            }
+        }
     }
 
     public Level getCurrentLevel() {
