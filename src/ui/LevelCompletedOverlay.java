@@ -26,7 +26,7 @@ public class LevelCompletedOverlay {
     private void initButtons() {
         int menuX = (int) (110 * Game.SCALE);
         int nextX = (int) (175 * Game.SCALE);
-        int bY = (int) (195 * Game.SCALE);
+        int bY = (int) (230 * Game.SCALE);
         menu = new UrmButton(menuX, bY, URM_SIZE, URM_SIZE, 2);
         next = new UrmButton(nextX, bY, URM_SIZE, URM_SIZE, 0);
     }
@@ -36,7 +36,7 @@ public class LevelCompletedOverlay {
         bgWidth = (int) (img.getWidth() * Game.SCALE / 1.5);
         bgHeight = (int) (img.getHeight() * Game.SCALE / 1.5);
         bgX = Game.GAME_WIDTH / 2 - bgWidth / 2;
-        bgY = (int) (115 * Game.SCALE);
+        bgY = (int) (150 * Game.SCALE);
     }
 
     public void update() {
@@ -63,12 +63,12 @@ public class LevelCompletedOverlay {
     public void mouseReleased(MouseEvent e) {
         if (isIn(e, menu)) {
             if (menu.isMousePressed()) {
-                GameState.state = GameState.MENU;
                 playing.resetAll();
+                GameState.state = GameState.MENU;
             }
         } else if (isIn(e, next)) {
             if (next.isMousePressed()) {
-                playing.resetAll();
+                playing.loadNextLevel();
             }
         }
 

@@ -30,9 +30,7 @@ public class Playing extends State implements StateMethods {
     private int yLevelOffset;
     private int bottomBorder = (int) (0.5 * Game.GAME_HEIGHT);
     private int topBorder = (int) (0.8 * Game.GAME_HEIGHT);
-    private int levelTilesHeight = LoadSave.GetLevelData().length;
-    private int maxTilesOffset = levelTilesHeight - Game.TILES_IN_HEIGHT;
-    private int maxLevelOffsetY = maxTilesOffset * Game.TILES_SIZE;
+    private int maxLevelOffsetY;
 
     private BufferedImage backgroundImg, bigCloud, smallCloud;
     private int[] smallCloudPos;
@@ -48,6 +46,20 @@ public class Playing extends State implements StateMethods {
         for (int i = 0; i < smallCloudPos.length; i++) {
             smallCloudPos[i] = (int) (90 * SCALE) + random.nextInt((int) (100 * SCALE));
         }
+        calcLevelOffset();
+    }
+
+    private void calcLevelOffset() {
+        maxLevelOffsetY = levelManager.getCurrentLevel().getLevelOffset();
+    }
+
+    public void setMaxLevelOffset(int offset) {
+        this.maxLevelOffsetY = offset;
+    }
+
+    public void loadNextLevel() {
+        resetAll();
+        levelManager.loadNextLevel();
     }
 
     public void resetAll() {

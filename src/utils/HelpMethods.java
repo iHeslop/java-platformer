@@ -1,6 +1,8 @@
 package utils;
 
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import main.Game;
 
@@ -82,5 +84,20 @@ public class HelpMethods {
                 return false;
             }
         return true;
+    }
+
+    public static int[][] GetLevelData(BufferedImage img) {
+        int[][] data = new int[img.getHeight()][img.getWidth()];
+        for (int i = 0; i < img.getHeight(); i++) {
+            for (int j = 0; j < img.getWidth(); j++) {
+                Color colour = new Color(img.getRGB(j, i));
+                int value = colour.getRed();
+                if (value >= 96) {
+                    value = 0;
+                }
+                data[i][j] = value;
+            }
+        }
+        return data;
     }
 }

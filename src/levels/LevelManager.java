@@ -5,14 +5,17 @@ import static utils.HelpMethods.isTouchingDoor;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import gamestates.GameState;
 import main.Game;
 import utils.LoadSave;
 
 public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
-    private Level levelOne;
+    private ArrayList<Level> levels;
+    private int levelIndex = 0;
 
     private BufferedImage[][] door;
 
@@ -23,9 +26,18 @@ public class LevelManager {
     public LevelManager(Game game) {
         this.game = game;
         this.animationCompleted = false;
-        levelOne = new Level(LoadSave.GetLevelData());
         importOutsideSprites();
+        levels = new ArrayList<>();
+        buildAllLevels();
         loadAnimations();
+
+    }
+
+    private void buildAllLevels() {
+        BufferedImage[] allLevels = LoadSave.getAllLevels();
+        for (BufferedImage img : allLevels) {
+            levels.add(new Level(img));
+        }
     }
 
     private void importOutsideSprites() {
@@ -44,7 +56,7 @@ public class LevelManager {
     }
 
     public void draw(Graphics g, int levelOffset) {
-        int levelHeight = levelOne.getLevelData().length;
+        int levelHeight = levels.get(levelIndex).getLevelData().length;
 
         int startTileY = levelOffset / TILES_SIZE;
         if (startTileY < 0) {
@@ -58,12 +70,12 @@ public class LevelManager {
         float playerX = game.getPlaying().getPlayer().getHitBox().x;
         float playerY = game.getPlaying().getPlayer().getHitBox().y;
         for (int i = startTileY; i < endTileY; i++) {
-            for (int j = 0; j < levelOne.getLevelData()[0].length; j++) {
-                int index = levelOne.getSpriteIndex(j, i);
+            for (int j = 0; j < levels.get(levelIndex).getLevelData()[0].length; j++) {
+                int index = levels.get(levelIndex).getSpriteIndex(j, i);
                 int tileX = j * TILES_SIZE;
                 int tileY = i * TILES_SIZE - levelOffset;
-                if (levelOne.getLevelData()[i][j] == DOOR_TILE_VALUE) {
-                    if (isTouchingDoor(playerX, playerY, levelOne.getLevelData())) {
+                if (levels.get(levelIndex).getLevelData()[i][j] == DOOR_TILE_VALUE) {
+                    if (isTouchingDoor(playerX, playerY, levels.get(levelIndex).getLevelData())) {
                         g.drawImage(door[0][aniIndex], tileX, tileY, TILES_SIZE, TILES_SIZE, null);
                         if (!animationCompleted) {
                             updateAnimationTick();
@@ -102,8 +114,20 @@ public class LevelManager {
         }
     }
 
+    public void loadNextLevel() {
+        levelIndex++;
+        if (levelIndex >= levels.size()) {
+            levelIndex = 0;
+            GameState.state = GameState.MENU;
+        }
+
+        Level newLevel = levels.get(levelIndex);
+        game.getPlaying().getPlayer().loadLevelData(newLevel.getLevelData());
+        game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());
+    }
+
     public Level getCurrentLevel() {
-        return levelOne;
+        return levels.get(levelIndex);
     }
 
     public Game getGame() {
@@ -112,5 +136,9 @@ public class LevelManager {
 
     public void setAnimationCompleted(boolean completed) {
         this.animationCompleted = completed;
+    }
+
+    public int getAmountOfLevels() {
+        return levels.size();
     }
 }
