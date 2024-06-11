@@ -24,12 +24,12 @@ public class Playing extends State implements StateMethods {
     private PauseOverLay pauseOverlay;
     private boolean paused = false;
 
-    private int xLevelOffset;
-    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
-    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
-    private int levelTilesWide = LoadSave.GetLevelData()[0].length;
-    private int maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
-    private int maxLevelOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int yLevelOffset;
+    private int bottomBorder = (int) (0.2 * Game.GAME_HEIGHT);
+    private int topBorder = (int) (0.8 * Game.GAME_HEIGHT);
+    private int levelTilesHeight = LoadSave.GetLevelData().length;
+    private int maxTilesOffset = levelTilesHeight - Game.TILES_IN_HEIGHT;
+    private int maxLevelOffsetY = maxTilesOffset * Game.TILES_SIZE;
 
     private BufferedImage backgroundImg, bigCloud, smallCloud;
     private int[] smallCloudPos;
@@ -80,18 +80,18 @@ public class Playing extends State implements StateMethods {
     }
 
     private void checkViewport() {
-        int playerX = (int) player.getHitBox().x;
-        int diff = playerX - xLevelOffset;
-        if (diff > rightBorder) {
-            xLevelOffset += diff - rightBorder;
-        } else if (diff < leftBorder) {
-            xLevelOffset += diff - leftBorder;
+        int playerY = (int) player.getHitBox().y;
+        int diff = playerY - yLevelOffset;
+        if (diff > topBorder) {
+            yLevelOffset += diff - topBorder;
+        } else if (diff < bottomBorder) {
+            yLevelOffset += diff - bottomBorder;
         }
 
-        if (xLevelOffset > maxLevelOffsetX) {
-            xLevelOffset = maxLevelOffsetX;
-        } else if (xLevelOffset < 0) {
-            xLevelOffset = 0;
+        if (yLevelOffset > maxLevelOffsetY) {
+            yLevelOffset = maxLevelOffsetY;
+        } else if (yLevelOffset < 0) {
+            yLevelOffset = 0;
         }
     }
 
@@ -99,9 +99,9 @@ public class Playing extends State implements StateMethods {
     public void draw(Graphics g) {
         g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
-        drawClouds(g);
-        levelManager.draw(g, xLevelOffset);
-        player.render(g, xLevelOffset);
+        // drawClouds(g);
+        levelManager.draw(g, yLevelOffset);
+        player.render(g, yLevelOffset);
         if (paused) {
             g.setColor(new Color(0, 0, 0, 200));
             g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -109,19 +109,20 @@ public class Playing extends State implements StateMethods {
         }
     }
 
-    private void drawClouds(Graphics g) {
-        for (int i = 0; i < 3; i++) {
-            g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLevelOffset * 0.3), (int) (204 * SCALE),
-                    BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT,
-                    null);
-        }
-        for (int i = 0; i < smallCloudPos.length; i++) {
-            g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLevelOffset
-                    * 0.7), smallCloudPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT,
-                    null);
-        }
+    // private void drawClouds(Graphics g) {
+    // for (int i = 0; i < 3; i++) {
+    // g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (yLevelOffset * 0.3), (int)
+    // (204 * SCALE),
+    // BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT,
+    // null);
+    // }
+    // for (int i = 0; i < smallCloudPos.length; i++) {
+    // g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (yLevelOffset
+    // * 0.7), smallCloudPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT,
+    // null);
+    // }
 
-    }
+    // }
 
     @Override
     public void mousePressed(MouseEvent e) {

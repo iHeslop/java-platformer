@@ -54,9 +54,10 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g, int levelOffset) {
-        g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset) - levelOffset + flipX,
+        g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset) + flipX,
                 (int) (hitBox.y
-                        - yDrawOffset),
+                        - yDrawOffset)
+                        - levelOffset,
                 width * flipW, height, null);
     }
 

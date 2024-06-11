@@ -28,8 +28,8 @@ public class GameOptions extends State implements StateMethods {
     }
 
     private void loadButtons() {
-        int menuX = (int) (132 * Game.SCALE);
-        int menuY = (int) (325 * Game.SCALE);
+        int menuX = (int) (142 * Game.SCALE);
+        int menuY = (int) (320 * Game.SCALE);
         menuB = new UrmButton(menuX, menuY, URM_SIZE, URM_SIZE, 2);
     }
 
@@ -37,10 +37,10 @@ public class GameOptions extends State implements StateMethods {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMAGE);
         optionsBackgroundImg = LoadSave.GetSpriteAtlas(LoadSave.OPTIONS_MENU);
 
-        bgWidth = (int) (optionsBackgroundImg.getWidth() * Game.SCALE);
-        bgHeight = (int) (optionsBackgroundImg.getHeight() * Game.SCALE);
+        bgWidth = (int) (optionsBackgroundImg.getWidth() * Game.SCALE / 1.5);
+        bgHeight = (int) (optionsBackgroundImg.getHeight() * Game.SCALE / 1.5);
         bgX = Game.GAME_WIDTH / 2 - bgWidth / 2;
-        bgY = (int) (33 * Game.SCALE);
+        bgY = (int) (120 * Game.SCALE);
     }
 
     @Override

@@ -26,16 +26,16 @@ public class Menu extends State implements StateMethods {
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
         backgroundImgMenu = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMAGE);
-        menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE);
-        menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE);
+        menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE / 1.5);
+        menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE / 1.5);
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
-        menuY = (int) (45 * Game.SCALE);
+        menuY = (int) (120 * Game.SCALE);
     }
 
     private void loadButtons() {
-        buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (150 * Game.SCALE), 0, GameState.PLAYING);
-        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, GameState.OPTIONS);
-        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, GameState.QUIT);
+        buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (190 * Game.SCALE), 0, GameState.PLAYING);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (235 * Game.SCALE), 1, GameState.OPTIONS);
+        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (280 * Game.SCALE), 2, GameState.QUIT);
     }
 
     @Override
