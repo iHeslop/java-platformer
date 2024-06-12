@@ -2,7 +2,7 @@
 
 ## Demo 
 
-<video src="./screenshots/sky-warrior.mp4" title="sky-warrior" autoplay muted width="320" height="448"></video>
+https://github.com/iHeslop/java-platformer/assets/115535765/93b00ae6-8864-48e4-9626-a07eff06f0e0
 
 ---
 ## Description / Requirements
