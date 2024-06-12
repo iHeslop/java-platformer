@@ -129,7 +129,7 @@ public class Playing extends State implements StateMethods {
                 TILES_SIZE * 2, 0 - (int) (yLevelOffset * 0.2),
                 (int) (sun.getWidth() * Game.SCALE) - 4
                         * TILES_SIZE,
-                (int) (sun.getHeight() * Game.SCALE) - 6 * TILES_SIZE, null);
+                (int) (sun.getHeight() * Game.SCALE) - 10 * TILES_SIZE, null);
         g.drawImage(stars, TILES_SIZE, 0 - (int) (yLevelOffset * 0.3),
                 (int) (stars.getWidth() * Game.SCALE) - 2 * TILES_SIZE,
                 (int) (stars.getHeight() * Game.SCALE) - TILES_SIZE, null);

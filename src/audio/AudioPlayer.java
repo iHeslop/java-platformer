@@ -1,7 +1,8 @@
 package audio;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,6 +20,7 @@ public class AudioPlayer {
 
     public static int JUMP = 0;
     public static int LVL_COMPLETED = 1;
+    public static int DOOR = 2;
 
     private Clip[] songs, effects;
     private int currentSongId;
@@ -40,7 +42,7 @@ public class AudioPlayer {
     }
 
     private void loadEffects() {
-        String[] effectNames = { "jump", "lvlcompleted" };
+        String[] effectNames = { "jump", "lvlcompleted", "door" };
         effects = new Clip[effectNames.length];
         for (int i = 0; i < effects.length; i++) {
             effects[i] = getClip(effectNames[i]);
@@ -49,13 +51,22 @@ public class AudioPlayer {
     }
 
     private Clip getClip(String name) {
-        URL url = getClass().getResource("/audio/" + name + ".wav");
-        try (AudioInputStream audio = AudioSystem.getAudioInputStream(url)) {
+        InputStream is = getClass().getResourceAsStream("/audio/" + name + ".wav");
+        InputStream buffered = new BufferedInputStream(is);
+        try (AudioInputStream audio = AudioSystem.getAudioInputStream(buffered)) {
             Clip clip = AudioSystem.getClip();
             clip.open(audio);
             return clip;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -82,9 +93,7 @@ public class AudioPlayer {
 
     public void levelCompleted() {
         stopSong();
-        System.out.println("Song stopped, now playing level completed effect.");
         playEffect(LVL_COMPLETED);
-        System.out.println("Effect played");
     }
 
     public void playEffect(int effect) {

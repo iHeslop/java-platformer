@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import audio.AudioPlayer;
 import gamestates.GameState;
 import gamestates.Playing;
 import main.Game;
@@ -25,6 +26,7 @@ public class LevelManager {
     private static final int DOOR_TILE_VALUE = 74;
     private boolean animationCompleted = false;
     private boolean levelCompletedFlag = false;
+    private boolean doorTouched = false;
 
     public LevelManager(Game game, Playing playing) {
         this.game = game;
@@ -81,6 +83,7 @@ public class LevelManager {
                 if (levels.get(levelIndex).getLevelData()[i][j] == DOOR_TILE_VALUE) {
                     if (isTouchingDoor(playerX, playerY, levels.get(levelIndex).getLevelData())) {
                         g.drawImage(door[0][aniIndex], tileX, tileY, TILES_SIZE, TILES_SIZE, null);
+                        doorSound();
                         if (!animationCompleted) {
                             updateAnimationTick();
                         } else {
@@ -96,6 +99,13 @@ public class LevelManager {
         }
     }
 
+    private void doorSound() {
+        if (!doorTouched) {
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DOOR);
+            doorTouched = true;
+        }
+    }
+
     private void completeLevel() {
         if (!levelCompletedFlag) {
             playing.setCompleted(true);
@@ -105,6 +115,10 @@ public class LevelManager {
 
     public void setLevelCompleted(boolean completed) {
         this.levelCompletedFlag = completed;
+    }
+
+    public void setDoorTouched(boolean door) {
+        this.doorTouched = door;
     }
 
     public void updateAnimationTick() {
@@ -136,6 +150,7 @@ public class LevelManager {
             GameState.state = GameState.MENU;
         }
         levelCompletedFlag = false;
+        doorTouched = false;
         Level newLevel = levels.get(levelIndex);
         game.getPlaying().getPlayer().loadLevelData(newLevel.getLevelData());
         game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());

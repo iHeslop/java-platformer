@@ -216,6 +216,7 @@ public class Player extends Entity {
         hitBox.x = x;
         hitBox.y = y;
         playing.getLevelManager().setLevelCompleted(false);
+        playing.getLevelManager().setDoorTouched(false);
         if (!isEntityOnFloor(hitBox, data)) {
             inAir = true;
         }
