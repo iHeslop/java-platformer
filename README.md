@@ -2,7 +2,7 @@
 
 ## Demo 
 
-https://github.com/iHeslop/java-platformer/assets/115535765/93b00ae6-8864-48e4-9626-a07eff06f0e0
+https://github.com/iHeslop/java-platformer/assets/115535765/465da0f4-aa13-4651-913f-ad13e304f9ef
 
 ---
 ## Description / Requirements
