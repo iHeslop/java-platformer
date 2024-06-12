@@ -11,7 +11,7 @@ public class GameWindow {
     public GameWindow(GamePanel panel) {
 
         frame = new JFrame();
-
+        frame.setTitle("Sky Warrior");
         frame.setDefaultCloseOperation(3);
         frame.add(panel);
 
