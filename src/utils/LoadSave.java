@@ -26,6 +26,9 @@ public class LoadSave {
     public static final String DOOR = "door-opening.png";
     public static final String COMPLETED_IMAGE = "completed_sprite.png";
 
+    public static final String STARS = "stars.png";
+    public static final String SUN = "sun.png";
+
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
         InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);

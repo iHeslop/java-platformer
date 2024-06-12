@@ -32,7 +32,7 @@ public class Playing extends State implements StateMethods {
     private int topBorder = (int) (0.8 * Game.GAME_HEIGHT);
     private int maxLevelOffsetY;
 
-    private BufferedImage backgroundImg, bigCloud, smallCloud;
+    private BufferedImage backgroundImg, bigCloud, smallCloud, stars, sun;
     private int[] smallCloudPos;
     private Random random = new Random();
 
@@ -42,6 +42,8 @@ public class Playing extends State implements StateMethods {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMAGE);
         bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
         smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
+        stars = LoadSave.GetSpriteAtlas(LoadSave.STARS);
+        sun = LoadSave.GetSpriteAtlas(LoadSave.SUN);
         smallCloudPos = new int[8];
         for (int i = 0; i < smallCloudPos.length; i++) {
             smallCloudPos[i] = (int) (90 * SCALE) + random.nextInt((int) (100 * SCALE));
@@ -123,7 +125,14 @@ public class Playing extends State implements StateMethods {
         g.drawImage(backgroundImg, TILES_SIZE, 0 - yLevelOffset,
                 (int) (backgroundImg.getWidth() * Game.SCALE) - 2 * TILES_SIZE,
                 (int) (backgroundImg.getHeight() * Game.SCALE) - TILES_SIZE, null);
-
+        g.drawImage(sun,
+                TILES_SIZE * 2, 0 - (int) (yLevelOffset * 0.2),
+                (int) (sun.getWidth() * Game.SCALE) - 4
+                        * TILES_SIZE,
+                (int) (sun.getHeight() * Game.SCALE) - 6 * TILES_SIZE, null);
+        g.drawImage(stars, TILES_SIZE, 0 - (int) (yLevelOffset * 0.3),
+                (int) (stars.getWidth() * Game.SCALE) - 2 * TILES_SIZE,
+                (int) (stars.getHeight() * Game.SCALE) - TILES_SIZE, null);
         drawClouds(g);
         levelManager.draw(g, yLevelOffset);
         if (!completed) {
