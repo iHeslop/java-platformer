@@ -8,11 +8,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestates.GameState;
+import gamestates.Playing;
 import main.Game;
 import utils.LoadSave;
 
 public class LevelManager {
     private Game game;
+    private Playing playing;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
     private int levelIndex = 0;
@@ -22,9 +24,11 @@ public class LevelManager {
     private int aniTick, aniSpeed = 30, aniIndex;
     private static final int DOOR_TILE_VALUE = 74;
     private boolean animationCompleted = false;
+    private boolean levelCompletedFlag = false;
 
-    public LevelManager(Game game) {
+    public LevelManager(Game game, Playing playing) {
         this.game = game;
+        this.playing = playing;
         this.animationCompleted = false;
         importOutsideSprites();
         levels = new ArrayList<>();
@@ -80,7 +84,7 @@ public class LevelManager {
                         if (!animationCompleted) {
                             updateAnimationTick();
                         } else {
-                            game.gameComplete();
+                            completeLevel();
                         }
                     } else {
                         g.drawImage(door[0][0], tileX, tileY, TILES_SIZE, TILES_SIZE, null);
@@ -90,6 +94,17 @@ public class LevelManager {
                 }
             }
         }
+    }
+
+    private void completeLevel() {
+        if (!levelCompletedFlag) {
+            playing.setCompleted(true);
+            levelCompletedFlag = true;
+        }
+    }
+
+    public void setLevelCompleted(boolean completed) {
+        this.levelCompletedFlag = completed;
     }
 
     public void updateAnimationTick() {
@@ -120,7 +135,7 @@ public class LevelManager {
             levelIndex = 0;
             GameState.state = GameState.MENU;
         }
-
+        levelCompletedFlag = false;
         Level newLevel = levels.get(levelIndex);
         game.getPlaying().getPlayer().loadLevelData(newLevel.getLevelData());
         game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());
@@ -140,5 +155,9 @@ public class LevelManager {
 
     public int getAmountOfLevels() {
         return levels.size();
+    }
+
+    public int getLevelIndex() {
+        return levelIndex;
     }
 }

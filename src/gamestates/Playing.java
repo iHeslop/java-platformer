@@ -70,10 +70,11 @@ public class Playing extends State implements StateMethods {
     }
 
     private void initClasses() {
-        levelManager = new LevelManager(game);
+        levelManager = new LevelManager(game, this);
         int initialX = GAME_WIDTH / 2;
         int initialY = (levelManager.getCurrentLevel().getLevelData().length - 1) * Game.TILES_SIZE - Game.TILES_SIZE;
-        player = new Player(initialX, initialY - Game.TILES_SIZE * 2, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE));
+        player = new Player(initialX, initialY - Game.TILES_SIZE * 2, (int) (50 * Game.SCALE), (int) (36 * Game.SCALE),
+                this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverLay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -234,5 +235,12 @@ public class Playing extends State implements StateMethods {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        if (completed) {
+            game.getAudioPlayer().levelCompleted();
+        }
+    }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
     }
 }

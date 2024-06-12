@@ -3,6 +3,8 @@ package entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import audio.AudioPlayer;
+import gamestates.Playing;
 import main.Game;
 import utils.LoadSave;
 
@@ -14,7 +16,7 @@ import static utils.Constants.PlayerConstants.getSpriteAmount;
 import static utils.HelpMethods.*;
 
 public class Player extends Entity {
-
+    private Playing playing;
     private BufferedImage[][] animations;
     private int aniTick, aniSpeed = 30, jumpAniSpeed = 15, aniIndex;
     private int playerAction = IDLE;
@@ -39,8 +41,9 @@ public class Player extends Entity {
     private int flipX = 0;
     private int flipW = 1;
 
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing = playing;
         this.width = width;
         this.height = height;
         initHitBox(x, y, (int) (14 * Game.SCALE), (int) (28 * Game.SCALE));
@@ -156,6 +159,9 @@ public class Player extends Entity {
 
     public void jump() {
         if (!inAir || jumpCount < maxJumps) {
+            if (jumpCount == 0) {
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
+            }
             inAir = true;
             airSpeed = jumpSpeed;
             jumpCount++;
@@ -209,6 +215,7 @@ public class Player extends Entity {
         playerAction = IDLE;
         hitBox.x = x;
         hitBox.y = y;
+        playing.getLevelManager().setLevelCompleted(false);
         if (!isEntityOnFloor(hitBox, data)) {
             inAir = true;
         }

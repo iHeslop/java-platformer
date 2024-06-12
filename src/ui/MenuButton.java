@@ -81,4 +81,8 @@ public class MenuButton {
     public void setMousePressed(boolean mousePressed) {
         this.mousePressed = mousePressed;
     }
+
+    public GameState getState() {
+        return state;
+    }
 }
