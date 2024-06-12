@@ -2,7 +2,7 @@
 
 ## Demo 
 
-<video src="screenshots/sky-warrior.mp4" title="sky-warrior" autoplay muted width="320" height="448"></video>
+<video src="./screenshots/sky-warrior.mp4" title="sky-warrior" autoplay muted width="320" height="448"></video>
 
 ---
 ## Description / Requirements
